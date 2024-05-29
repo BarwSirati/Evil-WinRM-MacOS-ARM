@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Function to display usage information
+usage() {
+    echo "Usage: $0 -i <ip_address> -u <username> -p <password>"
+    exit 1
+}
+
+# Check if the number of arguments is less than 6
+if [ $# -lt 6 ]; then
+    usage
+fi
+
+# Parse command line arguments
+while getopts ":i:u:p:" opt; do
+    case $opt in
+        i)
+            ip_address=$OPTARG
+            ;;
+        u)
+            username=$OPTARG
+            ;;
+        p)
+            password=$OPTARG
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            usage
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            usage
+            ;;
+    esac
+done
+
+docker run --rm -ti --name evil-winrm --platform linux/amd64 oscarakaelvis/evil-winrm -i $ip_address -u $username -p $password
+
