@@ -16,9 +16,9 @@ sudo make install
 
 ### Usage
 ```
-Usage: evil-winrm -i IP -u USER [-p PASS] [-H HASH]
-    -i, --ip IP                      Remote host IP or hostname. FQDN for Kerberos auth (required)
-    -u, --user USER                  Username (required if not using kerberos)
-    -p, --password PASS              Password
-    -H, --hash HASH                  NTHash
+Usage: evil-winrm -i IP -u USER [-p <password> | -h <hash>]
+    -i IP                Remote host IP or hostname. FQDN for Kerberos auth (required)
+    -u USER              Username (required if not using kerberos)
+    -p PASS              Password
+    -h HASH              NTHash
 ```
