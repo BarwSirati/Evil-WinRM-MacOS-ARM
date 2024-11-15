@@ -2,17 +2,17 @@
 
 # Function to display usage information
 usage() {
-    echo "Usage: $0 -i <ip_address> -u <username> -p <password>"
+    echo "Usage: $0 -i <ip_address> -u <username> [-p <password> | -h <hash>]"
     exit 1
 }
 
-# Check if the number of arguments is less than 6
-if [ $# -lt 6 ]; then
+# Check if the number of arguments is less than 4 (minimum required)
+if [ $# -lt 4 ]; then
     usage
 fi
 
 # Parse command line arguments
-while getopts ":i:u:p:" opt; do
+while getopts ":i:u:p:h:" opt; do
     case $opt in
         i)
             ip_address=$OPTARG
@@ -22,6 +22,9 @@ while getopts ":i:u:p:" opt; do
             ;;
         p)
             password=$OPTARG
+            ;;
+        h)
+            hash=$OPTARG
             ;;
         \?)
             echo "Invalid option: -$OPTARG" >&2
@@ -34,5 +37,18 @@ while getopts ":i:u:p:" opt; do
     esac
 done
 
-docker run --rm -ti --name evil-winrm --platform linux/amd64 oscarakaelvis/evil-winrm -i $ip_address -u $username -p $password
+# Check if either password or hash is provided
+if [[ -n $password && -n $hash ]]; then
+    echo "Specify only one of -p (password) or -h (hash), not both."
+    usage
+elif [[ -z $password && -z $hash ]]; then
+    echo "Either -p (password) or -h (hash) must be provided."
+    usage
+fi
 
+# Run docker command based on provided arguments
+if [ -n "$password" ]; then
+    docker run --rm -ti --name evil-winrm --platform linux/amd64 oscarakaelvis/evil-winrm -i "$ip_address" -u "$username" -p "$password"
+elif [ -n "$hash" ]; then
+    docker run --rm -ti --name evil-winrm --platform linux/amd64 oscarakaelvis/evil-winrm -i "$ip_address" -u "$username" -H "$hash"
+fi
