@@ -1,6 +1,6 @@
-# Evil-Winrm
+# Evil-WinRM
 
-evil-winrm for macOS Apple Silicon Chip
+Evil-WinRM for macOS Apple Silicon Chip
 
 ### Description
 In macOS arm64, We can't install evil-winrm but the official repository give a way to install with docker so I created binary file that can use evil-winrm like install on your computer
