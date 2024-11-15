@@ -13,3 +13,12 @@ In macOS arm64, We can't install evil-winrm but the official repository give a w
 ```
 sudo make install
 ```
+
+### Usage
+```
+Usage: evil-winrm -i IP -u USER [-p PASS] [-H HASH]
+    -i, --ip IP                      Remote host IP or hostname. FQDN for Kerberos auth (required)
+    -u, --user USER                  Username (required if not using kerberos)
+    -p, --password PASS              Password
+    -H, --hash HASH                  NTHash
+```
